@@ -1,0 +1,12 @@
+# requirements.txt
+langchain
+openai
+sentence-transformers
+chromadb
+pydantic
+tqdm
+uvicorn
+fastapi
+python-dotenv
+pytest
+black
