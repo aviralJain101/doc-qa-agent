@@ -5,6 +5,7 @@ import os
 import fitz  # PyMuPDF
 import markdown
 from bs4 import BeautifulSoup
+from app.ingestion.normalizer import normalize_text  # Importing normalize_text
 
 
 def parse_pdf(file_path: str) -> str:
@@ -16,7 +17,10 @@ def parse_pdf(file_path: str) -> str:
     doc = fitz.open(file_path)
     for page in doc:
         text.append(page.get_text())
-    return "\n".join(text)
+    
+    # Normalize the extracted text
+    normalized_text = normalize_text("\n".join(text))
+    return normalized_text
 
 
 def parse_md(file_path: str) -> str:
@@ -25,11 +29,15 @@ def parse_md(file_path: str) -> str:
     """
     with open(file_path, "r", encoding="utf-8") as f:
         md_content = f.read()
+    
     # Convert markdown to HTML
     html = markdown.markdown(md_content)
     # Strip HTML tags
     soup = BeautifulSoup(html, "html.parser")
-    return soup.get_text(separator="\n")
+    
+    # Normalize the extracted text
+    normalized_text = normalize_text(soup.get_text(separator="\n"))
+    return normalized_text
 
 
 def parse_txt(file_path: str) -> str:
@@ -37,11 +45,8 @@ def parse_txt(file_path: str) -> str:
     Read a plain text file and return its contents.
     """
     with open(file_path, "r", encoding="utf-8") as f:
-        return f.read()
-
-
-
-# if __name__ == "__main__":
-#     print("PDF:\n", parse_pdf("DocuChat.pdf"))
-#     print("MD:\n", parse_md("readme.md"))
-#     print("TXT:\n", parse_txt("requirements.txt"))
+        text = f.read()
+    
+    # Normalize the extracted text
+    normalized_text = normalize_text(text)
+    return normalized_text
