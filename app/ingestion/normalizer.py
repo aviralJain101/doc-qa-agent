@@ -8,17 +8,17 @@ def normalize_text(text):
     text = text.lower()
     
     # Remove non-alphabetic characters (e.g., numbers, punctuation)
-    text = re.sub(r'[^a-zA-Z\s]', '', text)
+    # text = re.sub(r'[^a-zA-Z\s]', '', text)
     
     # Remove extra whitespaces
     text = ' '.join(text.split())
     
     # Remove stopwords
-    stop_words = set(stopwords.words('english'))
-    text = ' '.join([word for word in text.split() if word not in stop_words])
+    # stop_words = set(stopwords.words('english'))
+    # text = ' '.join([word for word in text.split() if word not in stop_words])
     
     # Optionally, apply stemming
-    ps = PorterStemmer()
-    text = ' '.join([ps.stem(word) for word in text.split()])
+    # ps = PorterStemmer()
+    # text = ' '.join([ps.stem(word) for word in text.split()])
     
     return text
