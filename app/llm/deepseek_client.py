@@ -3,7 +3,7 @@
 from llama_cpp import Llama
 
 # Path to your local DeepSeek GGUF model
-MODEL_PATH = "app/models/deepseek-llm-7b-chat.Q4_K_M.gguf"
+MODEL_PATH = "models/deepseek-llm-7b-chat.Q4_K_M.gguf"
 
 # Initialize the Llama model
 # llm = Llama(
