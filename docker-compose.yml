@@ -1,12 +1,39 @@
-version: '3.8'
+version: '3.9'
 
 services:
-  chromadb:
-    image: chromadb/chroma
+  fastapi:
+    build: .
+    container_name: rag-fastapi
+    ports:
+      - "8001:8001"
+    volumes:
+      - .:/app
+    depends_on:
+      - chroma
+      - llm
+    environment:
+      - MODEL_PATH=/models/deepseek-llm-7b-chat.Q4_K_M.gguf
+    command: uvicorn main:app --host 0.0.0.0 --port 8001 --reload
+
+  chroma:
+    image: ghcr.io/chroma-core/chroma:latest
+    container_name: chroma
     ports:
       - "8000:8000"
     volumes:
-      - ./chroma-data:/chroma/.chroma
-    environment:
-      - IS_PERSISTENT=TRUE
+      - chroma_data:/chroma/.chroma
 
+  llm:
+    image: ghcr.io/ggerganov/llama.cpp:latest
+    container_name: llama-server
+    command: >
+      --model /models/deepseek-llm-7b-chat.Q4_K_M.gguf
+      --ctx-size 4096
+      --port 11434
+    ports:
+      - "11434:11434"
+    volumes:
+      - ./models:/models
+
+volumes:
+  chroma_data:

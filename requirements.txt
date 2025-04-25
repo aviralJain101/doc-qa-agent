@@ -1,12 +1,25 @@
-# requirements.txt
-langchain
-openai
-sentence-transformers
-chromadb
-pydantic
-tqdm
-uvicorn
+# FastAPI and web server
 fastapi
-python-dotenv
-pytest
-black
+uvicorn[standard]
+
+# PDF and document parsing
+PyMuPDF       # For PDF parsing
+markdown      # For .md to HTML conversion
+beautifulsoup4 # For HTML tag stripping
+
+# ChromaDB + embeddings
+chromadb
+sentence-transformers
+
+# DeepSeek/LLM with llama-cpp-python
+llama-cpp-python
+
+# Pydantic for schema validation
+pydantic
+
+# Utility libraries
+numpy
+scipy
+
+# For file uploads
+python-multipart
