@@ -1,6 +1,6 @@
 import tiktoken
 
-def chunk_text(text: str, max_tokens: int = 300, overlap: int = 100) -> list[str]:
+def chunk_text(text: str, max_tokens: int = 300, overlap: int = 50) -> list[str]:
     """
     Split the text into overlapping chunks of ~max_tokens using GPT-3.5 tokenizer.
     """

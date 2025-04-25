@@ -6,7 +6,7 @@ from app.vectorstore.chroma_store import check_chroma
 if __name__ == "__main__":
     delete_collection()
 
-    file_path = "sts.pdf"
+    file_path = "DocuChat.pdf"
     ingest_pdf(file_path)
     print("Ingestion complete.")
 

@@ -4,7 +4,8 @@ from pydantic import BaseModel
 
 from app.vectorstore.chroma_store import get_chroma_collection
 from app.embedding.embedder import get_embeddings
-from app.llm.llama_client import ask_llama
+# from app.llm.llama_client import ask_llama
+from app.llm.deepseek_client import ask_deepseek
 from app.prompts.templates import DEFAULT_PROMPT
 
 app = FastAPI()
@@ -34,5 +35,5 @@ def retrieve_context(query: str, k: int = 5) -> str:
 @app.post("/query", response_model=QueryResponse)
 def query_doc(request: QueryRequest):
     context = retrieve_context(request.question, request.k)
-    answer = ask_llama(request.question, context, DEFAULT_PROMPT)
+    answer = ask_deepseek(request.question, context, DEFAULT_PROMPT)
     return QueryResponse(answer=answer, context=context)
