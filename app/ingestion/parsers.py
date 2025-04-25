@@ -8,6 +8,23 @@ from bs4 import BeautifulSoup
 from app.ingestion.normalizer import normalize_text  # Importing normalize_text
 
 
+def parse_file(file_path: str) -> str:
+    """
+    Determine file type by extension and route to the appropriate parser.
+    Supported formats: .pdf, .md, .txt
+    """
+    ext = os.path.splitext(file_path)[1].lower()
+
+    if ext == ".pdf":
+        return parse_pdf(file_path)
+    elif ext == ".md":
+        return parse_md(file_path)
+    elif ext == ".txt":
+        return parse_txt(file_path)
+    else:
+        raise ValueError(f"Unsupported file type: {ext}")
+    
+
 def parse_pdf(file_path: str) -> str:
     """
     Extract text from a PDF file using PyMuPDF.

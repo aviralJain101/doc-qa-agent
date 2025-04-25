@@ -1,6 +1,6 @@
 # scripts/test_retrieve.py
 import time
-from app.retrieve.retriever import retrieve_relevant_chunks
+from app.vectorstore.chroma_store import retrieve_relevant_chunks
 
 start = time.time()
 query = "What is DocuChat?"

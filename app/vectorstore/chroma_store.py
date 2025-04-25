@@ -1,7 +1,10 @@
 # app/vectorstore/chroma_store.py
 
 import chromadb
+from typing import List
 from chromadb.config import Settings
+
+from app.embedding.embedder import get_embeddings
 
 # Setup Chroma client
 chroma_client = chromadb.HttpClient(
@@ -72,3 +75,18 @@ def delete_by_metadata(metadata_filter: dict):
     collection = get_chroma_collection()
     collection.delete(where=metadata_filter)
     print(f"✅ Deleted chunks matching metadata filter {metadata_filter} from ChromaDB.")
+
+def retrieve_relevant_chunks(query: str, top_k: int = 5) -> List[str]:
+    # Step 1: Convert query to embedding
+    query_embedding = get_embeddings(query)
+
+    # Step 2: Perform vector search
+    collection = get_chroma_collection()
+    results = collection.query(
+        query_embeddings=[query_embedding],
+        n_results=top_k,
+        include=["documents"]
+    )
+
+    # Step 3: Return matched chunks
+    return results["documents"][0]

@@ -1,13 +1,13 @@
 import os
 from app.embedding.embedder import get_embeddings
-from app.ingestion.parsers import parse_pdf
+from app.ingestion.parsers import parse_file
 from app.ingestion.chunker import chunk_text
 from app.vectorstore.chroma_store import add_to_chroma
 
 
 def ingest_pdf(file_path: str):
     print(f"Reading: {file_path}")
-    raw_text = parse_pdf(file_path)
+    raw_text = parse_file(file_path)
     chunks = chunk_text(raw_text)
 
     print(f"Total chunks: {len(chunks)}")

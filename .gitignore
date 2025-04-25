@@ -178,6 +178,4 @@ cython_debug/
 # PyPI configuration file
 .pypirc
 
-DocuChat.pdf
-sts.pdf
-MaternalHighRistPregnancy.pdf
+uploaded_docs/
