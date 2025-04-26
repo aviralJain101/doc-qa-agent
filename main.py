@@ -10,8 +10,7 @@ from app.ingestion.parsers import parse_file
 from app.ingestion.chunker import chunk_text
 from app.vectorstore.chroma_store import add_to_chroma
 from app.vectorstore.chroma_store import delete_collection
-# from app.llm.llama_client import ask_llama
-from app.llm.deepseek_client import ask_deepseek
+from app.llm.groq_client import ask_groq
 from app.prompts.templates import DEFAULT_PROMPT
 
 app = FastAPI()
@@ -44,7 +43,7 @@ def retrieve_context(query: str, k: int = 5) -> str:
 @app.post("/query", response_model=QueryResponse)
 def query_doc(request: QueryRequest):
     context = retrieve_context(request.question, request.k)
-    answer = ask_deepseek(request.question, context, DEFAULT_PROMPT)
+    answer = ask_groq(request.question, context, DEFAULT_PROMPT)
     return QueryResponse(answer=answer, context=context)
 
 
