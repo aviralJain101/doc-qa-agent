@@ -1,6 +1,7 @@
 # FastAPI and web server
 fastapi
 uvicorn[standard]
+requests
 
 # PDF and document parsing
 PyMuPDF       # For PDF parsing
@@ -10,9 +11,13 @@ beautifulsoup4 # For HTML tag stripping
 # ChromaDB + embeddings
 chromadb
 sentence-transformers
+tiktoken
+markdown
 
 # DeepSeek/LLM with llama-cpp-python
 llama-cpp-python
+# For LLMs
+openai
 
 # Pydantic for schema validation
 pydantic

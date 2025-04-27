@@ -1,39 +1,31 @@
-version: '3.9'
+version: "3.8"
 
 services:
-  fastapi:
+  app:
     build: .
-    container_name: rag-fastapi
+    container_name: DocuChat  # Changed container name to docuChat
     ports:
-      - "8001:8001"
-    volumes:
-      - .:/app
-    depends_on:
-      - chroma
-      - llm
+      - "8000:8000"  # Exposes FastAPI on port 8000
     environment:
-      - MODEL_PATH=/models/deepseek-llm-7b-chat.Q4_K_M.gguf
-    command: uvicorn main:app --host 0.0.0.0 --port 8001 --reload
+      - GROQ_API_KEY=${GROQ_API_KEY}  # Assuming you're using an environment variable for the LLM API key
+    volumes:
+      - .:/app  # Mounts your project directory to the container for easy updates
+    depends_on:
+      - chroma  # Make sure ChromaDB is up before the FastAPI app starts
 
   chroma:
-    image: ghcr.io/chroma-core/chroma:latest
-    container_name: chroma
+    image: ghcr.io/chroma-core/chroma:latest  # Example ChromaDB Docker image, replace if needed
+    container_name: chromadb
     ports:
-      - "8000:8000"
+      - "6333:6333"  # Exposes ChromaDB on port 6333 (default)
     volumes:
-      - chroma_data:/chroma/.chroma
-
-  llm:
-    image: ghcr.io/ggerganov/llama.cpp:latest
-    container_name: llama-server
-    command: >
-      --model /models/deepseek-llm-7b-chat.Q4_K_M.gguf
-      --ctx-size 4096
-      --port 11434
-    ports:
-      - "11434:11434"
-    volumes:
-      - ./models:/models
+      - chroma-data:/app/chroma_data  # Persist ChromaDB data
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:6333/"]  # Health check for ChromaDB
+      interval: 10s
+      retries: 5
+      start_period: 30s
+      timeout: 10s
 
 volumes:
-  chroma_data:
+  chroma-data:
