@@ -14,8 +14,6 @@ sentence-transformers
 tiktoken
 markdown
 
-# DeepSeek/LLM with llama-cpp-python
-llama-cpp-python
 # For LLMs
 openai
 

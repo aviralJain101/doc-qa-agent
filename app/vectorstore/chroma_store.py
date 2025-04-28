@@ -9,7 +9,7 @@ from app.embedding.embedder import get_embeddings
 # Setup Chroma client
 chroma_client = chromadb.HttpClient(
     host="localhost",
-    port=8000,
+    port=6333,
     settings=Settings(anonymized_telemetry=False)
 )
 

@@ -1,25 +1,25 @@
-# Step 1: Use the official Python image as the base image
-FROM python:3.10-bullseye
+# Base: slim Python 3.11
+FROM python:3.11-slim
 
-# Step 2: Set environment variables
-ENV PYTHONUNBUFFERED 1
-ENV PYTHONDONTWRITEBYTECODE 1
+# Environment variables
+ENV PYTHONUNBUFFERED=1
+ENV PYTHONDONTWRITEBYTECODE=1
 
-# Step 3: Set working directory
+# Set working directory
 WORKDIR /app
 
-# Step 5: Copy requirements
+# Copy requirements file
 COPY requirements.txt .
 
-# Step 6: Install Python dependencies
-RUN pip install --upgrade pip && \
-    pip install --no-cache-dir -r requirements.txt
+# Install Python dependencies
+RUN pip install --upgrade pip setuptools wheel \
+    && pip install --no-cache-dir -r requirements.txt
 
-# Step 7: Copy source code
+# Copy project files
 COPY . .
 
-# Step 8: Expose port
+# Expose port
 EXPOSE 8000
 
-# Step 9: Command to run
+# Default command to run app
 CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]

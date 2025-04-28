@@ -3,7 +3,7 @@
 from app.vectorstore.chroma_store import collection
 from app.embedding.embedder import get_embeddings
 # from app.llm.llama_client import ask_llama
-from app.llm.deepseek_client import ask_deepseek
+from app.llm.groq_client import ask_groq
 from app.prompts.templates import DEFAULT_PROMPT
 
 def retrieve_context(query: str, k: int = 3) -> str:
@@ -18,7 +18,7 @@ def retrieve_context(query: str, k: int = 3) -> str:
 if __name__ == "__main__":
     query = "What is DocuChat?"
     context = retrieve_context(query)
-    answer = ask_deepseek(query, context, DEFAULT_PROMPT)
+    answer = ask_groq(query, context, DEFAULT_PROMPT)
 
     print(f"❓ Question: {query}\n")
     print(f"📄 Context:\n{context[:300]}...\n")
