@@ -3,6 +3,13 @@ fastapi
 uvicorn[standard]
 requests
 
+# For authentication
+python-jose[cryptography]
+passlib
+
+# For database
+sqlalchemy
+
 # PDF and document parsing
 PyMuPDF       # For PDF parsing
 markdown      # For .md to HTML conversion

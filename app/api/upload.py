@@ -1,11 +1,12 @@
 # app/api/upload.py
-from fastapi import APIRouter, UploadFile, File
+from fastapi import APIRouter, UploadFile, File, Depends
 from fastapi.responses import JSONResponse
 import os
 from app.ingestion.parsers import parse_file
 from app.embedding.embedder import get_embeddings
 from app.ingestion.chunker import chunk_text
 from app.vectorstore.chroma_store import add_to_chroma, delete_collection
+from app.core.dependencies import get_current_user
 
 router = APIRouter()
 
@@ -13,19 +14,19 @@ UPLOAD_FOLDER = "uploaded_docs"
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
 @router.post("/upload")
-async def upload_document(file: UploadFile = File(...)):
+async def upload_document(file: UploadFile = File(...), user_id: str = Depends(get_current_user)):
     # Save uploaded file
     file_path = os.path.join(UPLOAD_FOLDER, file.filename)
     with open(file_path, "wb") as f:
         f.write(await file.read())
 
     # Currently only single file support is implemented so delete any existing collections
-    delete_collection()
+    delete_collection(user_id)
     # Parse, chunk, embed, and store
     raw_text = parse_file(file_path)
     chunks = chunk_text(raw_text)
     embeddings = get_embeddings(chunks)
-    add_to_chroma(chunks, embeddings, file.filename)
+    add_to_chroma(chunks, embeddings, file.filename, user_id)
 
     # 🧹 Auto-delete file after ingestion
     try:

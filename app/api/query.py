@@ -1,7 +1,8 @@
 # app/api/query.py
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Depends
 from pydantic import BaseModel
 from app.vectorstore.chroma_store import get_chroma_collection
+from app.core.dependencies import get_current_user
 from app.embedding.embedder import get_embeddings
 from app.llm.groq_client import ask_groq
 from app.prompts.templates import DEFAULT_PROMPT
@@ -16,9 +17,9 @@ class QueryResponse(BaseModel):
     answer: str
     context: str
 
-def retrieve_context(query: str, k: int = 5) -> str:
+def retrieve_context(query: str, user_id: str, k: int = 5) -> str:
     embedding = get_embeddings(query)
-    collection = get_chroma_collection()
+    collection = get_chroma_collection(user_id)
     if not collection:
         raise HTTPException(status_code=500, detail="ChromaDB collection not found.")
     results = collection.query(
@@ -31,7 +32,7 @@ def retrieve_context(query: str, k: int = 5) -> str:
     return "\n\n".join(results["documents"][0])
 
 @router.post("/query", response_model=QueryResponse)
-def query_doc(request: QueryRequest):
-    context = retrieve_context(request.question, request.k)
+def query_doc(request: QueryRequest, user_id: str = Depends(get_current_user)):
+    context = retrieve_context(request.question, user_id, request.k)
     answer = ask_groq(request.question, context, DEFAULT_PROMPT)
     return QueryResponse(answer=answer, context=context)
