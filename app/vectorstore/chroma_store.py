@@ -8,8 +8,8 @@ from app.embedding.embedder import get_embeddings
 
 # Setup Chroma client
 chroma_client = chromadb.HttpClient(
-    host="localhost",
-    port=6333,
+    host="chromadb",
+    port=8000,
     settings=Settings(anonymized_telemetry=False)
 )
 
@@ -55,8 +55,11 @@ def delete_collection():
     """
     Deletes the entire collection from ChromaDB.
     """
-    chroma_client.delete_collection("docs")
-    print("✅ Deleted 'docs' collection from ChromaDB.")
+    try:
+        chroma_client.delete_collection("docs")
+        print("✅ Deleted 'docs' collection from ChromaDB.")
+    except chromadb.errors.NotFoundError:
+        print("⚠️ Collection 'docs' did not exist. Skipping deletion.")
 
 
 def delete_by_ids(ids: list[str]):

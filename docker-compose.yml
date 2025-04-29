@@ -17,7 +17,7 @@ services:
     image: ghcr.io/chroma-core/chroma:latest  # Example ChromaDB Docker image, replace if needed
     container_name: chromadb
     ports:
-      - "6333:6333"  # Exposes ChromaDB on port 6333 (default)
+      - "6333:8000"  # Exposes ChromaDB on port 6333 (default)
     volumes:
       - chroma-data:/app/chroma_data  # Persist ChromaDB data
     healthcheck:
