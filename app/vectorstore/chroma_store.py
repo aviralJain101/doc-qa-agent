@@ -55,9 +55,9 @@ def delete_collection(user_id: str):
     """
     Deletes the entire collection from ChromaDB.
     """
-    collection = get_chroma_collection(user_id)
     try:
-        collection.delete()
+        # collection.delete() it somehow keeps the context or embeddings of the previous doc also even when deleted.
+        chroma_client.delete_collection(name=f"docs_{user_id}")
         print(f"✅ Deleted docs_{user_id} collection from ChromaDB.")
     except chromadb.errors.NotFoundError:
         print(f"⚠️ Collection docs_{user_id} did not exist. Skipping deletion.")
