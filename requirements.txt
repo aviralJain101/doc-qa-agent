@@ -35,3 +35,6 @@ scipy
 
 # For file uploads
 python-multipart
+
+# For streamlit
+streamlit

@@ -6,6 +6,7 @@ services:
     container_name: DocuChat  # Changed container name to docuChat
     ports:
       - "8000:8000"  # Exposes FastAPI on port 8000
+      - "8501:8501"  # Streamlit on port 8501
     environment:
       - GROQ_API_KEY=${GROQ_API_KEY}  # Assuming you're using an environment variable for the LLM API key
     volumes:
