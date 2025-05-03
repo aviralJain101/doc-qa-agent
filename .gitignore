@@ -176,6 +176,8 @@ cython_debug/
 # PyPI configuration file
 .pypirc
 
+# Uploaded files
 uploaded_docs/
 
+# Sqlite database
 users.db
